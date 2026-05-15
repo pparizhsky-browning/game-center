@@ -6,13 +6,11 @@
   from = "/bstars"
   to = "/Bstars/"
   status = 301
-  force = true
 
 [[redirects]]
   from = "/bstars/*"
   to = "/Bstars/:splat"
   status = 301
-  force = true
 
 # HTML should always be fresh so updates appear immediately.
 [[headers]]
