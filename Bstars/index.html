@@ -14,7 +14,7 @@
         <div id="content"></div>
         <div id="orientation"></div>
         <div id="loader">Loading ...</div>
-        <script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+        <script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js" async onerror="window.__imaBlocked=true;"></script>
         <script type="text/javascript" src="assets/box2dweb/nape.min.js">
             var nape ="nape.min.js" ;
         </script>
@@ -74,6 +74,24 @@
                 js.src = "assets/main.min.js";
                 fjs.parentNode.insertBefore(js, fjs);
             })(document, "script", "gamedistribution-jssdk");
+        </script>
+        <script type="text/javascript">
+            (function () {
+                var fired = false;
+                var orig = myDispatchEvent;
+                myDispatchEvent = function (name) {
+                    if (name === "SDK_GAME_START") fired = true;
+                    orig(name);
+                };
+                var gdScript = document.getElementById("gamedistribution-jssdk");
+                if (gdScript) gdScript.onerror = function () { if (!fired) myDispatchEvent("SDK_GAME_START"); };
+                setTimeout(function () {
+                    if (!fired) {
+                        console.warn("GD SDK timeout — starting game without ads");
+                        myDispatchEvent("SDK_GAME_START");
+                    }
+                }, 3000);
+            })();
         </script>
         <script type="text/javascript" src="assets/basketball_legends_2019.min.js"></script>
     </body>
